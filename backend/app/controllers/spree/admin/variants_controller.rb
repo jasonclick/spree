@@ -47,7 +47,7 @@ module Spree
           else
             Variant.only_deleted.where(product_id: parent.id)
           end
-        @collection
+        @collection = current_spree_vendor ? @collection.for_vendor(current_spree_vendor) : @collection
       end
 
       private

@@ -19,7 +19,9 @@ module Spree
                  else
                    controller_name.to_sym
                  end
-        authorize! :admin, record
+        if not current_spree_vendor
+          authorize! :admin, record
+        end
         authorize! action, record
       end
 
