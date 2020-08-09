@@ -189,7 +189,17 @@ module Spree
     end
 
     def price_in(currency)
-      prices.detect { |price| price.currency == currency } || prices.build(currency: currency)
+      if self.is_master
+        # Jason: update master price based on average of variants prices
+        price = prices.detect { |price| price.currency == currency } || prices.build(currency: currency)
+        if price
+          active_variants_prices = self.product.variants.active.map{|v| v.price_in(currency).amount}
+          price.update(amount:active_variants_prices.sum / active_variants_prices.size)
+        end
+        price
+      else
+        prices.detect { |price| price.currency == currency } || prices.build(currency: currency)
+      end
     end
 
     def amount_in(currency)

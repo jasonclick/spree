@@ -32,7 +32,8 @@ module Spree
     end
 
     def default_variant(variants, product)
-      variants_option_types_presenter(variants, product).default_variant || product.default_variant
+      # variants_option_types_presenter(variants, product).default_variant || product.default_variant
+      product.master
     end
 
     def used_variants_options(variants, product)
